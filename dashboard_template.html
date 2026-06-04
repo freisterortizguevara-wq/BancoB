@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BBVA Asistente Inteligente</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #1e2a3e;
+        }
+        /* Header estilo BBVA */
+        .header {
+            background: linear-gradient(135deg, #0033a0 0%, #0050b3 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            font-weight: normal;
+            font-size: 1rem;
+            background: #ffdd00;
+            color: #0033a0;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            margin-left: 0.5rem;
+        }
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.15);
+            border-radius: 40px;
+            padding: 0.3rem;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .tab-btn.active {
+            background: white;
+            color: #0033a0;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .card {
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+        }
+        /* Chat */
+        .chat-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .message-bubble {
+            background: #f0f4fc;
+            border-radius: 20px;
+            padding: 0.8rem 1.2rem;
+            max-width: 80%;
+            align-self: flex-start;
+        }
+        .message-bubble.user {
+            background: #0033a0;
+            color: white;
+            align-self: flex-end;
+        }
+        .input-group {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        input, textarea, .file-label {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ccd7e6;
+            border-radius: 28px;
+            font-family: inherit;
+            font-size: 1rem;
+            background: white;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        button {
+            background: #0033a0;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #002080;
+        }
+        .file-label {
+            background: #eef2fa;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            width: auto;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        /* Dashboard cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-top: 5px solid #0033a0;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #0033a0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.8rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background: #f0f4fc;
+            color: #0033a0;
+        }
+        .badge {
+            background: #ffdd00;
+            color: #0033a0;
+            border-radius: 20px;
+            padding: 0.2rem 0.6rem;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            .message-bubble {
+                max-width: 95%;
+            }
+            .input-group {
+                flex-direction: column;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #6c7a8e;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">BBVA <span>asistente IA</span></div>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('chat')">💬 Chat</button>
+            <button class="tab-btn" onclick="showTab('dashboard')">📊 Dashboard</button>
+        </div>
+    </div>
+    <div class="container">
+        <!-- Sección Chat -->
+        <div id="chat-section" class="card">
+            <h2>📱 Asistente virtual</h2>
+            <p>Simula conversación (prueba de concepto). Próximamente disponible en WhatsApp.</p>
+            <div class="chat-area" id="chat-messages">
+                <div class="message-bubble">🤖 ¡Hola! Soy el asistente de BBVA. Puedo ayudarte con saldos, préstamos o apelaciones. Adjunta un PDF si es necesario.</div>
+            </div>
+            <div class="input-group">
+                <input type="text" id="telefono" placeholder="Tu número (ej: 912345678)" value="912345678">
+                <textarea id="mensaje" placeholder="Escribe tu mensaje..."></textarea>
+                <label class="file-label" for="pdf-upload">📎 Adjuntar PDF</label>
+                <input type="file" id="pdf-upload" accept="application/pdf">
+                <button onclick="enviarMensaje()">Enviar</button>
+            </div>
+        </div>
+
+        <!-- Sección Dashboard (inicialmente oculta) -->
+        <div id="dashboard-section" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-number">{{ total }}</div><div>Conversaciones</div></div>
+                <div class="stat-card"><div class="stat-number">{{ escalados }}</div><div>Casos escalados</div></div>
+                <div class="stat-card"><div class="stat-number">{{ tasa_escalado }}%</div><div>Tasa escalamiento</div></div>
+            </div>
+            <div class="card">
+                <h3>📈 Intenciones detectadas</h3>
+                <table>
+                    <tr><th>Intención</th><th>Cantidad</th></tr>
+                    {% for intencion, count in intenciones.items() %}
+                    <tr><td>{{ intencion }}</td><td>{{ count }}</td></tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="card">
+                <h3>🕒 Últimas conversaciones</h3>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr><th>Fecha</th><th>Teléfono</th><th>Mensaje</th><th>Intención</th><th>Respuesta</th><th>Escalado</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for c in conversaciones %}
+                            <tr>
+                                <td>{{ c.fecha[:16] }}</td>
+                                <td>{{ c.telefono }}</td>
+                                <td>{{ c.mensaje[:40] }}{% if c.mensaje|length > 40 %}...{% endif %}</td>
+                                <td>{{ c.intencion }}</td>
+                                <td>{{ c.respuesta[:50] }}{% if c.respuesta|length > 50 %}...{% endif %}</td>
+                                <td>{% if c.escalado %}✅{% else %}❌{% endif %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        BBVA Asistente Inteligente | Cumple con análisis de PDF, CRM, trazabilidad y escalamiento humano
+    </footer>
+
+    <script>
+        function showTab(tab) {
+            const chatDiv = document.getElementById('chat-section');
+            const dashboardDiv = document.getElementById('dashboard-section');
+            const btns = document.querySelectorAll('.tab-btn');
+            if (tab === 'chat') {
+                chatDiv.style.display = 'block';
+                dashboardDiv.style.display = 'none';
+                btns[0].classList.add('active');
+                btns[1].classList.remove('active');
+            } else {
+                chatDiv.style.display = 'none';
+                dashboardDiv.style.display = 'block';
+                btns[0].classList.remove('active');
+                btns[1].classList.add('active');
+                // Recargar dashboard si es necesario
+                location.reload(); // opcional, pero asegura datos actualizados
+            }
+        }
+
+        async function enviarMensaje() {
+            const telefono = document.getElementById('telefono').value.trim();
+            const mensaje = document.getElementById('mensaje').value.trim();
+            const pdfFile = document.getElementById('pdf-upload').files[0];
+            if (!mensaje) {
+                alert("Escribe un mensaje");
+                return;
+            }
+            const formData = new FormData();
+            formData.append('telefono', telefono);
+            formData.append('mensaje', mensaje);
+            if (pdfFile) formData.append('pdf', pdfFile);
+            
+            const chatDiv = document.getElementById('chat-messages');
+            // Mostrar mensaje del usuario
+            const userBubble = document.createElement('div');
+            userBubble.className = 'message-bubble user';
+            userBubble.innerText = mensaje;
+            if (pdfFile) userBubble.innerText += ` 📎 ${pdfFile.name}`;
+            chatDiv.appendChild(userBubble);
+            
+            try {
+                const response = await fetch('/whatsapp-sim', { method: 'POST', body: formData });
+                const data = await response.json();
+                const botBubble = document.createElement('div');
+                botBubble.className = 'message-bubble';
+                botBubble.innerText = data.respuesta || "No entendí, intenta de nuevo.";
+                chatDiv.appendChild(botBubble);
+                document.getElementById('mensaje').value = '';
+                document.getElementById('pdf-upload').value = '';
+                chatDiv.scrollTop = chatDiv.scrollHeight;
+            } catch (error) {
+                console.error(error);
+                const errorBubble = document.createElement('div');
+                errorBubble.className = 'message-bubble';
+                errorBubble.innerText = "Error de conexión. Intenta más tarde.";
+                chatDiv.appendChild(errorBubble);
+            }
+        }
+    </script>
+</body>
+</html>
