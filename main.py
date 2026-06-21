@@ -24,11 +24,10 @@ load_dotenv()
 app = FastAPI(title="BBVA Colombia Asistente Inteligente ULTIMATE")
 
 # ==================== CONFIGURACIÓN LOGGING ====================
+# ==================== CONFIGURACIÓN LOGGING (SIN ARCHIVOS PARA VERCEL) ====================
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("bbva_assistant")
-handler = RotatingFileHandler('bbva_assistant.log', maxBytes=10000000, backupCount=5)
-handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-logger.addHandler(handler)
+# En Vercel no se pueden escribir archivos, solo logs en consola
 
 # ==================== CONFIG WHATSAPP ====================
 WHATSAPP_TOKEN  = os.getenv("WHATSAPP_TOKEN", "TU_TOKEN_AQUI")
