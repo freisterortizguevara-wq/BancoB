@@ -711,7 +711,7 @@ HTML = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BBVA Colombia | Asistente Inteligente ULTIMATE</title>
+    <title>FLOG Colombia | Asistente Inteligente ULTIMATE</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1564,7 +1564,7 @@ HTML = """
         <div class="logo-premium">
             <div class="logo-icon-premium">🏦</div>
             <div>
-                <div class="logo-text-premium">BBVA Colombia</div>
+                <div class="logo-text-premium">FLOG Colombia</div>
                 <div class="logo-sub-premium">Asistente ULTIMATE · v3.0</div>
             </div>
         </div>
